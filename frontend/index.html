@@ -1,264 +1,636 @@
 <!doctype html>
 <html lang="vi">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>DSS Mate — Trang chủ</title>
-
-  <!-- CSS chung của bạn (nếu có) -->
-  <link rel="stylesheet" href="./assets/styles.css" />
-
-  <style>
-    :root{
-      --bg:#0f1115; --card:#161a22; --text:#e7e9ee; --muted:#9aa3b2;
-      --border:#222838; --primary:#597bff; --ok:#2ecc71; --no:#ff6b6b;
-    }
-    *{box-sizing:border-box}
-    body{background:var(--bg); color:var(--text); font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif; margin:0}
-    a{color:#9db1ff; text-decoration:none}
-    .topbar{display:flex; gap:16px; align-items:center; padding:12px 18px; border-bottom:1px solid var(--border); background:#0d1016; position:sticky; top:0; z-index:5}
-    .brand{font-weight:800}
-    .toplinks{display:flex; gap:16px; align-items:center}
-    .spacer{flex:1}
-    .btn{border:1px solid var(--border); background:#0f1320; color:var(--text); padding:8px 12px; border-radius:10px; cursor:pointer}
-    .btn.primary{background:var(--primary); color:#fff; border-color:transparent}
-    .btn.ghost{background:transparent}
-    .btn.ok{background:var(--ok); color:#000; border-color:transparent}
-    .btn.no{background:var(--no); color:#000; border-color:transparent}
-    .container{max-width:1100px; margin:0 auto; padding:18px}
-    h1,h2{margin:0 0 12px 0}
-
-    .filters{background:var(--card); border:1px solid var(--border); border-radius:14px; padding:12px; display:grid; grid-template-columns: 1fr 160px 160px 160px 160px 1fr auto; gap:10px}
-    .filters input,.filters select{background:#0f1320; color:var(--text); border:1px solid var(--border); border-radius:10px; padding:10px 12px; outline:none}
-    @media (max-width:980px){
-      .filters{grid-template-columns:1fr 1fr}
-    }
-
-    .deck-wrap{margin-top:16px; display:grid; grid-template-columns: 1fr 380px 1fr; gap:16px; align-items:center}
-    @media (max-width:980px){
-      .deck-wrap{grid-template-columns:1fr}
-    }
-    .deck{position:relative; width:100%; max-width:380px; height:520px; margin:0 auto}
-    .card{position:absolute; inset:0; background:var(--card); border:1px solid var(--border); border-radius:18px; padding:0; box-shadow:0 10px 30px rgba(0,0,0,.25); display:flex; flex-direction:column; overflow:hidden; transition:transform .25s ease, opacity .25s ease}
-    .card img.hero{width:100%; height:60%; object-fit:cover; background:#0c0f17}
-    .card .meta{padding:12px 14px; display:flex; gap:10px}
-    .avatar{width:54px; height:54px; border-radius:50%; object-fit:cover; border:1px solid var(--border)}
-    .info{flex:1}
-    .name{font-weight:700}
-    .row{display:flex; gap:10px; align-items:center}
-    .muted{color:var(--muted)}
-    .actions{display:flex; gap:12px; justify-content:center; margin-top:12px}
-    .end-empty{display:flex; align-items:center; justify-content:center; text-align:center; padding:40px; height:520px; border:1px dashed var(--border); border-radius:18px; color:var(--muted); background:#0d111a}
-
-    .about{margin-top:28px; display:grid; gap:12px}
-    .about .card{position:relative; height:auto; padding:16px}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DSS Mate</title>
+<style>
+:root{--bg:#0f1115;--card:#161a22;--text:#e7e9ee;--muted:#9aa3b2;--border:#222838;--primary:#5b7cfe;--ok:#2ecc71;--no:#ff6b6b}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+a{color:#9db1ff;text-decoration:none}
+.topbar{display:flex;gap:8px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border);background:#0d1016;position:sticky;top:0;z-index:10}
+.brand{font-weight:800}
+.spacer{flex:1}
+.btn{border:1px solid var(--border);background:#0f1320;color:#e7e9ee;padding:8px 10px;border-radius:10px;cursor:pointer}
+.btn.primary{background:var(--primary);border-color:transparent;color:#fff}
+.btn.ghost{background:transparent}
+.btn.ok{background:var(--ok);color:#000;border-color:transparent}
+.btn.no{background:var(--no);color:#000;border-color:transparent}
+.container{max-width:1180px;margin:0 auto;padding:16px}
+h2{margin:16px 0 8px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px}
+input,select,textarea{width:100%;background:#0f1320;color:#e7e9ee;border:1px solid var(--border);border-radius:10px;padding:10px 12px}
+label{font-size:.9rem;color:var(--muted)}
+.tabpage{display:none}
+.tabpage.active{display:block}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:980px){.grid2{grid-template-columns:1fr}}
+.filters{display:grid;grid-template-columns:1fr 140px 120px 120px 1fr 120px auto;gap:8px}
+@media (max-width:980px){.filters{grid-template-columns:1fr 1fr}}
+.deck{position:relative;width:100%;max-width:420px;height:560px;margin:0 auto}
+.cardUser{position:absolute;inset:0;background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 10px 28px rgba(0,0,0,.25);transition:transform .25s ease,opacity .25s ease}
+.cardUser img.hero{width:100%;height:60%;object-fit:cover;background:#0c0f17}
+.meta{padding:12px;display:flex;gap:12px}
+.avatar{width:56px;height:56px;border-radius:50%;object-fit:cover;border:1px solid var(--border)}
+.name{font-weight:800}
+.muted{color:var(--muted)}
+.actions{display:flex;justify-content:center;gap:12px;margin-top:10px}
+.end{height:560px;display:flex;align-items:center;justify-content:center;border:1px dashed var(--border);border-radius:18px;color:var(--muted)}
+.kv{display:grid;grid-template-columns:160px 1fr;gap:4px 8px;color:var(--muted);font-size:.92rem;padding:0 12px 12px}
+.badge{position:absolute;top:10px;left:10px;background:#000a;padding:6px 8px;border-radius:10px;border:1px solid var(--border)}
+.list{max-height:440px;overflow:auto}
+.item{padding:10px;border-bottom:1px solid var(--border);cursor:pointer}
+.item:hover{background:#101525}
+.chat{display:grid;grid-template-columns:320px 1fr;gap:12px}
+@media (max-width:980px){.chat{grid-template-columns:1fr}}
+.chatPanel{height:70vh;display:flex;flex-direction:column}
+.chatHead{padding:12px;border-bottom:1px solid var(--border)}
+.chatBody{flex:1;overflow:auto;padding:12px}
+.msg{max-width:70%;padding:10px 12px;border-radius:12px;margin:6px 0}
+.me{background:#2b4cff;color:#fff;margin-left:auto}
+.other{background:#1a1f2c}
+.chatForm{display:flex;gap:8px;padding:10px;border-top:1px solid var(--border)}
+.hidden{display:none}
+.small{font-size:.9rem;color:var(--muted)}
+hr.sep{border:0;border-top:1px solid var(--border);margin:10px 0}
+.badgetxt{background:#0e1322;padding:2px 6px;border-radius:8px;border:1px solid var(--border)}
+</style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">DSS Mate</div>
-    <div class="toplinks">
-      <a href="index.html">Trang chủ</a>
-      <a href="about.html">About</a>
-      <a href="chat.html">Chat</a>
-    </div>
-    <div class="spacer"></div>
-    <a class="btn ghost" href="auth.html">Đăng nhập</a>
-    <a class="btn primary" href="auth.html">Đăng ký</a>
-  </header>
+<header class="topbar">
+  <div class="brand">DSS Mate</div>
+  <div class="row">
+    <button class="btn tabbtn" data-tab="home">Trang chủ</button>
+    <button class="btn tabbtn" data-tab="auth">Đăng nhập/Đăng ký</button>
+    <button class="btn tabbtn" data-tab="browse">Tìm & Quẹt</button>
+    <button class="btn tabbtn" data-tab="chat">Chat</button>
+    <button class="btn tabbtn" data-tab="backup">Sao lưu</button>
+    <button class="btn tabbtn" data-tab="phongthuy">Phong thuỷ</button>
+  </div>
+  <div class="spacer"></div>
+  <div id="whoami" class="small"></div>
+  <button class="btn ghost" id="btnLogout">Đăng xuất</button>
+</header>
 
-  <main class="container">
-    <section class="filters">
-      <input id="fltQuery" placeholder="Tìm theo tên, công việc, sở thích..."/>
-      <label for="fltGender" class="visually-hidden">Chọn giới tính</label>
-      <select id="fltGender">
-        <option value="">Giới tính (tất cả)</option>
-        <option value="Nam">Nam</option>
-        <option value="Nữ">Nữ</option>
-      </select>
-      <input id="fltAgeMin" type="number" min="18" max="70" placeholder="Tuổi từ">
-      <input id="fltAgeMax" type="number" min="18" max="70" placeholder="Tuổi đến">
-      <input id="fltDistance" type="number" min="0" placeholder="Khoảng cách (km)">
-      <input id="fltJob" placeholder="Công việc">
-      <div class="row">
-        <button id="btnReset" class="btn">Reset</button>
-        <button id="btnFilter" class="btn primary">Filter</button>
-      </div>
-    </section>
-
-    <section class="deck-wrap">
-      <div class="row" style="justify-content:flex-end"></div>
-
-      <div>
-        <div id="deck" class="deck"></div>
-        <div class="actions">
-          <button id="btnSkip" class="btn no">👎 Bỏ qua</button>
-          <button id="btnLike" class="btn ok">👍 Thích</button>
+<main class="container">
+  <!-- AUTH -->
+  <section id="tab-auth" class="tabpage">
+    <div class="grid2">
+      <div class="card">
+        <h2>Đăng nhập</h2>
+        <div class="row">
+          <div style="flex:1">
+            <label>Chọn người dùng có sẵn</label>
+            <select id="lgSelect"></select>
+          </div>
+          <button class="btn primary" id="btnLoginSelect" style="height:42px;align-self:end">Đăng nhập</button>
         </div>
-        <div class="row" style="justify-content:center; margin-top:6px">
-          <span class="muted">Mẹo: dùng phím ← (bỏ qua) và → (thích)</span>
+        <div style="margin-top:10px">
+          <label>Email</label>
+          <input id="lgEmail" placeholder="email (tùy chọn)">
+          <button class="btn" id="btnLoginEmail" style="margin-top:8px">Đăng nhập theo email</button>
+        </div>
+        <div class="row" style="margin-top:10px">
+          <button class="btn" id="btnLoginNam">Đăng nhập: Test Nam</button>
+          <button class="btn" id="btnLoginNu">Đăng nhập: Test Nu</button>
         </div>
       </div>
 
-      <div class="row" style="justify-content:flex-start"></div>
-    </section>
-
-    <section class="about">
-      <div class="card"><h3>Minh bạch</h3><div class="muted">Giải thích điểm gợi ý theo tiêu chí rõ ràng.</div></div>
-      <div class="card"><h3>Bảo mật</h3><div class="muted">Tối thiểu hóa thông tin nhạy cảm, lưu trữ an toàn.</div></div>
-      <div class="card"><h3>Nhanh gọn</h3><div class="muted">Tối ưu thao tác, quẹt trái/phải trực quan.</div></div>
-    </section>
-  </main>
-
-  <script src="./js/app.js"></script>
-  <script>
-    // ===== 10 người mẫu (fallback) =====
-    const MOCK = [
-      { id:"u001", fullName:"Tran A",   age:26, gender:"Nữ",  occupation:"Designer", finance:20, distanceKm:2.1, avatarUrl:"https://i.pravatar.cc/240?img=1", cover:"https://images.unsplash.com/photo-1520975922284-6d98aadc3f9b?q=80&w=1200&auto=format&fit=crop" },
-      { id:"u002", fullName:"Le B",     age:29, gender:"Nam",  occupation:"Dev",      finance:35, distanceKm:4.5, avatarUrl:"https://i.pravatar.cc/240?img=5", cover:"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop" },
-      { id:"u003", fullName:"Nguyen C", age:24, gender:"Nữ",  occupation:"Content",  finance:18, distanceKm:1.0, avatarUrl:"https://i.pravatar.cc/240?img=11",cover:"https://images.unsplash.com/photo-1520975922284-6d98aadc3f9b?q=80&w=1200&auto=format&fit=crop" },
-      { id:"u004", fullName:"Pham D",   age:32, gender:"Nam",  occupation:"QA",       finance:28, distanceKm:7.8, avatarUrl:"https://i.pravatar.cc/240?img=8", cover:"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop" },
-      { id:"u005", fullName:"Do E",     age:27, gender:"Nữ",  occupation:"Nurse",    finance:22, distanceKm:3.4, avatarUrl:"https://i.pravatar.cc/240?img=15",cover:"https://images.unsplash.com/photo-1520975922284-6d98aadc3f9b?q=80&w=1200&auto=format&fit=crop" },
-      { id:"u006", fullName:"Bui F",    age:30, gender:"Nam",  occupation:"PM",       finance:45, distanceKm:5.2, avatarUrl:"https://i.pravatar.cc/240?img=20",cover:"https://images.unsplash.com/photo-1520975922284-6d98aadc3f9b?q=80&w=1200&auto=format&fit=crop" },
-      { id:"u007", fullName:"Ly G",     age:25, gender:"Nữ",  occupation:"CSKH",     finance:17, distanceKm:2.8, avatarUrl:"https://i.pravatar.cc/240?img=31",cover:"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop" },
-      { id:"u008", fullName:"Hoang H",  age:28, gender:"Nam",  occupation:"Data Eng", finance:50, distanceKm:6.6, avatarUrl:"https://i.pravatar.cc/240?img=28",cover:"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop" },
-      { id:"u009", fullName:"Vu I",     age:23, gender:"Nữ",  occupation:"Sinh viên", finance:8,  distanceKm:1.7, avatarUrl:"https://i.pravatar.cc/240?img=47",cover:"https://images.unsplash.com/photo-1520975922284-6d98aadc3f9b?q=80&w=1200&auto=format&fit=crop" },
-      { id:"u010", fullName:"Phan K",   age:34, gender:"Nam",  occupation:"Kế toán",  finance:27, distanceKm:9.2, avatarUrl:"https://i.pravatar.cc/240?img=67",cover:"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop" },
-    ];
-
-    const qs = (s, el=document) => el.querySelector(s);
-    const deckEl = qs('#deck');
-
-    let dataset = [];
-    let pointer = 0;
-
-    function cardHtml(c){
-      return `
-        <div class="card" data-id="${c.id}">
-          <img class="hero" src="${c.cover || '/uploads/default_1.jpg'}" alt="">
-          <div class="meta">
-            <img class="avatar" src="${c.avatarUrl || '/uploads/default_1.jpg'}" onerror="this.src='/uploads/default_1.jpg'">
-            <div class="info">
-              <div class="name">${c.fullName} ${c.age?`• ${c.age}`:''}</div>
-              <div class="muted">${c.occupation || '—'}</div>
-              <div class="muted">Tài chính: ${c.finance? c.finance+' tr/tháng':'—'} • Cách ${c.distanceKm??'—'}km</div>
-            </div>
+      <div class="card">
+        <h2>Đăng ký (tạo người mới)</h2>
+        <div class="row">
+          <div style="flex:1">
+            <label>Họ tên</label>
+            <input id="rgName" placeholder="VD: Nguyen Van A">
+          </div>
+          <div style="width:160px">
+            <label>Giới tính</label>
+            <select id="rgGender"><option>Nam</option><option>Nữ</option><option>Khác</option></select>
           </div>
         </div>
-      `;
-    }
-    function renderDeck(list){
-      deckEl.innerHTML = '';
-      if(!list || list.length===0){
-        deckEl.innerHTML = `<div class="end-empty">Không có ứng viên. Hãy thay đổi bộ lọc.</div>`;
-        return;
-      }
-      const copy = [...list].slice(pointer).reverse();
-      copy.forEach(c => deckEl.insertAdjacentHTML('beforeend', cardHtml(c)));
-    }
-    function current(){ return pointer < dataset.length ? dataset[pointer] : null; }
+        <div class="row">
+          <div style="flex:1">
+            <label>Năm sinh</label>
+            <input id="rgYear" type="number" placeholder="1998">
+          </div>
+          <div style="flex:1">
+            <label>Nghề nghiệp</label>
+            <input id="rgJob" placeholder="Developer">
+          </div>
+        </div>
+        <div class="row">
+          <div style="flex:1">
+            <label>Địa chỉ</label>
+            <input id="rgAddress" placeholder="Ha Noi / Quan...">
+          </div>
+          <div style="flex:1">
+            <label>Tài chính (triệu/tháng)</label>
+            <input id="rgFinance" type="number" placeholder="20">
+          </div>
+        </div>
+        <div class="row">
+          <div style="flex:1">
+            <label>Email</label>
+            <input id="rgEmail" placeholder="abc@example.com">
+          </div>
+          <div style="flex:1">
+            <label>Điện thoại</label>
+            <input id="rgPhone" placeholder="09...">
+          </div>
+        </div>
+        <div>
+          <label>Giới thiệu</label>
+          <textarea id="rgBio" rows="2" placeholder="Mô tả ngắn..."></textarea>
+        </div>
+        <div class="row">
+          <div style="flex:1">
+            <label>Sở thích</label>
+            <textarea id="rgHobbies" rows="2"></textarea>
+          </div>
+          <div style="flex:1">
+            <label>Thói quen</label>
+            <textarea id="rgHabits" rows="2"></textarea>
+          </div>
+        </div>
+        <div style="margin-top:6px">
+          <label>Giá trị sống</label>
+          <textarea id="rgValues" rows="2"></textarea>
+        </div>
+        <div class="row" style="margin-top:8px">
+          <div>
+            <label>Ảnh đại diện</label>
+            <input id="rgAvatar" type="file" accept="image/*">
+          </div>
+          <img id="rgPreview" class="avatar" style="width:72px;height:72px;border-radius:10px" src="" alt="">
+          <div class="spacer"></div>
+          <button class="btn primary" id="btnCreate">Tạo tài khoản</button>
+        </div>
+        <hr class="sep">
+        <h3>Người dùng gần đây</h3>
+        <div id="userList" class="list"></div>
+      </div>
+    </div>
+  </section>
 
-    async function like(dir){
-      const c = current(); if(!c) return;
-      const topCard = deckEl.querySelector('.card:last-child');
-      if(topCard){
-        topCard.style.transform = `translateX(${dir>0?120:-120}px) rotate(${dir>0?8:-8}deg)`;
-        topCard.style.opacity = '0';
-        setTimeout(() => topCard.remove(), 220);
-      }
+  <!-- BROWSE & SWIPE -->
+  <section id="tab-browse" class="tabpage">
+    <div class="card">
+      <h2>Bộ lọc</h2>
+      <div class="filters">
+        <input id="fltQ" placeholder="Tên / công việc / bio...">
+        <select id="fltGender"><option value="">Giới tính</option><option>Nam</option><option>Nữ</option><option>Khác</option></select>
+        <input id="fltAgeMin" type="number" placeholder="Tuổi từ">
+        <input id="fltAgeMax" type="number" placeholder="Tuổi đến">
+        <input id="fltJob" placeholder="Nghề nghiệp">
+        <input id="fltFinanceMax" type="number" placeholder="Tối đa (triệu)">
+        <div class="row">
+          <button class="btn" id="btnReset">Reset</button>
+          <button class="btn primary" id="btnFilter">Lọc</button>
+        </div>
+      </div>
+    </div>
 
-      if (dir > 0) {
-        let matched = false, matchId = null;
-        try{
-          const me = JSON.parse(localStorage.getItem('dss.user') || 'null');
-          const meId = me?.userId || 'me';
-          if (window.api?.swipe){
-            const res = await window.api.swipe(meId, c.id, 1); // { matched, matchId } nếu backend hỗ trợ
-            matched = !!res?.matched; matchId = res?.matchId || null;
-          } else {
-            // demo: coi như match luôn
-            matched = true; matchId = 'mock-' + c.id;
-          }
-        }catch(e){ console.warn(e); }
+    <div class="grid2" style="margin-top:12px">
+      <div class="card">
+        <h2>Deck quẹt</h2>
+        <div id="deck" class="deck"></div>
+        <div class="actions">
+          <button class="btn no" id="btnSkip">👎 Bỏ qua</button>
+          <button class="btn ok" id="btnLike">👍 Thích</button>
+        </div>
+        <div class="small" style="text-align:center;margin-top:6px">
+          Mẹo: phím ← / → để bỏ qua / thích
+        </div>
+      </div>
+      <div class="card">
+        <h2>Giải thích</h2>
+        <div id="explainBox" class="kv"></div>
+      </div>
+    </div>
+  </section>
 
-        if (matched && matchId){
-          localStorage.setItem('chat.openMatchId', matchId);
-          localStorage.removeItem('chat.openWith');
-        } else {
-          localStorage.setItem('chat.openWith', c.id);
-          localStorage.removeItem('chat.openMatchId');
-        }
-        location.href = 'chat.html';
-        return;
-      }
+  <!-- CHAT -->
+  <section id="tab-chat" class="tabpage">
+    <div class="chat">
+      <div class="card chatPanel">
+        <div class="chatHead">Danh sách match</div>
+        <div id="matchList" class="list"></div>
+      </div>
+      <div class="card chatPanel">
+        <div id="chatHeader" class="chatHead">Chọn 1 match để chat</div>
+        <div id="chatBody" class="chatBody"></div>
+        <form id="chatForm" class="chatForm hidden">
+          <input id="chatInput" placeholder="Nhập tin nhắn...">
+          <button class="btn primary" type="submit">Gửi</button>
+        </form>
+      </div>
+    </div>
+  </section>
 
-      // bỏ qua
-      pointer++;
-      if(pointer >= dataset.length){
-        setTimeout(()=> { deckEl.innerHTML = `<div class="end-empty">Hết gợi ý • Hãy thử lọc lại nhé</div>`; }, 230);
-      }
-    }
 
-    window.addEventListener('keydown', (e) => {
-      if(e.key === 'ArrowLeft') like(-1);
-      if(e.key === 'ArrowRight') like(1);
-    });
-    qs('#btnLike').onclick = () => like(1);
-    qs('#btnSkip').onclick = () => like(-1);
+  <!-- PHONG THUY TABLES -->
+  <section id="tab-phongthuy" class="tabpage">
+    <div class="card">
+      <h2>Bảng tham chiếu phong thuỷ</h2>
+      <div class="row">
+        <div style="flex:1">
+          <h3>Nạp âm (can+chi → nạp âm)</h3>
+          <div id="tblNapAm" class="small"></div>
+        </div>
+        <div style="flex:1">
+          <h3>Cung phi (nam/nữ) & Bát trạch</h3>
+          <div id="tblCungPhi" class="small"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
 
-    qs('#btnReset').onclick = () => {
-      ['fltQuery','fltGender','fltAgeMin','fltAgeMax','fltDistance','fltJob'].forEach(id=>{
-        const el = qs('#'+id); if(el) el.value = '';
-      });
-      loadData({});
+<script>
+/* ====== SEED DEMO (10 user) ====
+*/
+const DATA_SEED = [
+  {name:"Lan", gender:"Nữ", year:1997, job:"Designer", address:"HN", bio:"Yeu tranh", avatar:"", finance:20},
+  {name:"Minh", gender:"Nam", year:1993, job:"Dev", address:"HN", bio:"Thich code", avatar:"", finance:35},
+  {name:"Thao", gender:"Nữ", year:1996, job:"Y ta", address:"HP", bio:"Cham chi", avatar:"", finance:18},
+  {name:"Duc", gender:"Nam", year:1990, job:"Marketing", address:"HCM", bio:"Nang dong", avatar:"", finance:30},
+  {name:"Huong", gender:"Nữ", year:1998, job:"Ke toan", address:"DN", bio:"Can than", avatar:"", finance:16},
+  {name:"Phong", gender:"Nam", year:1995, job:"Data", address:"HCM", bio:"Phan tich", avatar:"", finance:40},
+  {name:"Ha", gender:"Nữ", year:1999, job:"Sinh vien", address:"HN", bio:"Nang dong", avatar:"", finance:8},
+  {name:"Tuan", gender:"Nam", year:1994, job:"QA", address:"HN", bio:"Ki luong", avatar:"", finance:22},
+  {name:"My", gender:"Nữ", year:1995, job:"BA", address:"HCM", bio:"Giao tiep tot", avatar:"", finance:25},
+  {name:"Hieu", gender:"Nam", year:1992, job:"Tester", address:"DN", bio:"Tinh te", avatar:"", finance:28}
+];
+
+/* ===== IndexedDB Wrapper ===== */
+const IDB = (()=> {
+  const DB_NAME='DSSMateDB'; const DB_VERSION=3;
+  const STORES={ users:{keyPath:'id'}, swipes:{keyPath:'id'}, matches:{keyPath:'id'}, messages:{keyPath:'id'}, meta:{keyPath:'key'} };
+  let _dbp=null;
+  function open(){ if(_dbp) return _dbp; _dbp=new Promise((res,rej)=>{
+    const req=indexedDB.open(DB_NAME,DB_VERSION);
+    req.onupgradeneeded=ev=>{ const db=ev.target.result;
+      Object.entries(STORES).forEach(([n,opt])=>{ if(!db.objectStoreNames.contains(n)) db.createObjectStore(n,opt); });
     };
-    qs('#btnFilter').onclick = () => {
-      const filters = {
-        q:       qs('#fltQuery').value.trim(),
-        gender:  qs('#fltGender').value,
-        ageMin:  parseInt(qs('#fltAgeMin').value) || null,
-        ageMax:  parseInt(qs('#fltAgeMax').value) || null,
-        distanceKm: parseInt(qs('#fltDistance').value) || null,
-        job:     qs('#fltJob').value.trim()
-      };
-      loadData(filters);
-    };
+    req.onsuccess=()=>res(req.result); req.onerror=()=>rej(req.error);
+  }); return _dbp;}
+  function tx(store,mode='readonly'){ return open().then(db=>db.transaction(store,mode).objectStore(store)); }
+  async function getAll(store){ const os=await tx(store); return new Promise((res,rej)=>{ const r=os.getAll(); r.onsuccess=()=>res(r.result||[]); r.onerror=()=>rej(r.error); }); }
+  async function get(store,key){ const os=await tx(store); return new Promise((res,rej)=>{ const r=os.get(key); r.onsuccess=()=>res(r.result||null); r.onerror=()=>rej(r.error); }); }
+  async function put(store,obj){ const os=await tx(store,'readwrite'); return new Promise((res,rej)=>{ const r=os.put(obj); r.onsuccess=()=>res(true); r.onerror=()=>rej(r.error); }); }
+  async function bulkPut(store,arr){ const db=await open(); return new Promise((res,rej)=>{ const t=db.transaction(store,'readwrite'); const os=t.objectStore(store); arr.forEach(o=>os.put(o)); t.oncomplete=()=>res(true); t.onerror=()=>rej(t.error); }); }
+  async function clear(store){ const os=await tx(store,'readwrite'); return new Promise((res,rej)=>{ const r=os.clear(); r.onsuccess=()=>res(true); r.onerror=()=>rej(r.error); }); }
+  return {open,getAll,get,put,bulkPut,clear};
+})();
 
-    async function loadData(filters={}){
-      pointer = 0;
-      if(window.api?.searchCandidates){
-        try{
-          dataset = await window.api.searchCandidates(filters);
-        }catch(e){
-          console.warn('search API fail, use mock', e);
-          dataset = filterMock(MOCK, filters);
-        }
-      }else{
-        dataset = filterMock(MOCK, filters);
-      }
-      renderDeck(dataset);
-    }
-    function filterMock(arr, f){
-      let out = [...arr];
-      if(f.q){
-        const q = f.q.toLowerCase();
-        out = out.filter(x => (x.fullName+' '+(x.occupation||'')).toLowerCase().includes(q));
-      }
-      if(f.gender){
-        const g = f.gender.toLowerCase();
-        out = out.filter(x => (x.gender||'').toLowerCase().startsWith(g[0]));
-      }
-      if(f.ageMin) out = out.filter(x => x.age>=f.ageMin);
-      if(f.ageMax) out = out.filter(x => x.age<=f.ageMax);
-      if(f.job){
-        const j = f.job.toLowerCase();
-        out = out.filter(x => (x.occupation||'').toLowerCase().includes(j));
-      }
-      if(f.distanceKm!=null) out = out.filter(x => (x.distanceKm||999) <= f.distanceKm);
-      return out;
-    }
+const Session={
+  async get(){return await IDB.get('meta','whoami');},
+  async set(userId){return await IDB.put('meta',{key:'whoami',userId});},
+  async clear(){const db=await IDB.open(); return new Promise((res,rej)=>{ const t=db.transaction('meta','readwrite'); t.objectStore('meta').delete('whoami'); t.oncomplete=()=>res(true); t.onerror=()=>rej(t.error); });}
+};
 
-    loadData({});
-  </script>
+/* ===== Phong thuy core ===== */
+const THIEN_CAN=["Giáp","Ất","Bính","Đinh","Mậu","Kỷ","Canh","Tân","Nhâm","Quý"];
+const DIA_CHI=["Tý","Sửu","Dần","Mão","Thìn","Tỵ","Ngọ","Mùi","Thân","Dậu","Tuất","Hợi"];
+const NAP_AM_60=[
+ "Hải Trung Kim","Hải Trung Kim","Lư Trung Hỏa","Lư Trung Hỏa","Đại Lâm Mộc","Đại Lâm Mộc","Lộ Bàng Thổ","Lộ Bàng Thổ","Kiếm Phong Kim","Kiếm Phong Kim",
+ "Sơn Đầu Hỏa","Sơn Đầu Hỏa","Giản Hạ Thủy","Giản Hạ Thủy","Thành Đầu Thổ","Thành Đầu Thổ","Bạch Lạp Kim","Bạch Lạp Kim","Dương Liễu Mộc","Dương Liễu Mộc",
+ "Tuyền Trung Thủy","Tuyền Trung Thủy","Ốc Thượng Thổ","Ốc Thượng Thổ","Tích Lịch Hỏa","Tích Lịch Hỏa","Tùng Bách Mộc","Tùng Bách Mộc","Trường Lưu Thủy","Trường Lưu Thủy",
+ "Sa Trung Kim","Sa Trung Kim","Sơn Hạ Hỏa","Sơn Hạ Hỏa","Bình Địa Mộc","Bình Địa Mộc","Bích Thượng Thổ","Bích Thượng Thổ","Kim Bạch Kim","Kim Bạch Kim",
+ "Phúc Đăng Hỏa","Phúc Đăng Hỏa","Thiên Hà Thủy","Thiên Hà Thủy","Đại Trạch Thổ","Đại Trạch Thổ","Thoa Xuyến Kim","Thoa Xuyến Kim","Tang Đố Mộc","Tang Đố Mộc",
+ "Đại Khê Thủy","Đại Khê Thủy","Sa Trung Thổ","Sa Trung Thổ","Thiên Thượng Hỏa","Thiên Thượng Hỏa","Thạch Lựu Mộc","Thạch Lựu Mộc","Đại Hải Thủy","Đại Hải Thủy"
+];
+const NAP_AM_TO_ELEMENT={
+ "Hải Trung Kim":"Kim","Kiếm Phong Kim":"Kim","Sa Trung Kim":"Kim","Kim Bạch Kim":"Kim","Thoa Xuyến Kim":"Kim","Bạch Lạp Kim":"Kim",
+ "Lư Trung Hỏa":"Hỏa","Sơn Đầu Hỏa":"Hỏa","Tích Lịch Hỏa":"Hỏa","Sơn Hạ Hỏa":"Hỏa","Phúc Đăng Hỏa":"Hỏa","Thiên Thượng Hỏa":"Hỏa",
+ "Đại Lâm Mộc":"Mộc","Dương Liễu Mộc":"Mộc","Tùng Bách Mộc":"Mộc","Bình Địa Mộc":"Mộc","Tang Đố Mộc":"Mộc","Thạch Lựu Mộc":"Mộc",
+ "Lộ Bàng Thổ":"Thổ","Thành Đầu Thổ":"Thổ","Ốc Thượng Thổ":"Thổ","Bích Thượng Thổ":"Thổ","Sa Trung Thổ":"Thổ","Đại Trạch Thổ":"Thổ",
+ "Giản Hạ Thủy":"Thủy","Tuyền Trung Thủy":"Thủy","Trường Lưu Thủy":"Thủy","Thiên Hà Thủy":"Thủy","Đại Khê Thủy":"Thủy","Đại Hải Thủy":"Thủy"
+};
+const ELEMENT_REL={
+  "Mộc->Hỏa":"Sinh","Hỏa->Thổ":"Sinh","Thổ->Kim":"Sinh","Kim->Thủy":"Sinh","Thủy->Mộc":"Sinh"
+};
+const EAST_GROUP=new Set(["Khảm","Ly","Chấn","Tốn"]);
+const WEST_GROUP=new Set(["Càn","Đoài","Cấn","Khôn"]);
+
+function digitSum(n){let s=0;while(n>0){s+=n%10;n=Math.floor(n/10);}return s>9?digitSum(s):s;}
+function cungPhi(year, gender){
+  const base=digitSum(year); let num;
+  if(gender==="Nam"){ num=10-base; if(year>=2000) num+=1; if(num<=0) num=digitSum(-num); if(num===5) num=2; }
+  else { num=5+base; if(year>=2000) num+=1; if(num>9) num=digitSum(num); if(num===5) num=8; }
+  const map={1:"Khảm",2:"Khôn",3:"Chấn",4:"Tốn",6:"Càn",7:"Đoài",8:"Cấn",9:"Ly"};
+  return map[num]||"Khôn";
+}
+function batTrachScore(c1,c2){
+  if(!c1||!c2) return {type:"Không rõ",score:0};
+  const g1=EAST_GROUP.has(c1)?"Đông":"Tây";
+  const g2=EAST_GROUP.has(c2)?"Đông":"Tây";
+  if(g1===g2){
+    if(c1===c2) return {type:"Phục Vị", score:1};
+    return {type:"Sinh Khí/Thiên Y (cùng nhóm)", score:2};
+  } else {
+    return {type:"Ngũ Quỷ/Lục Sát/Tuyệt Mệnh (khác nhóm)", score:-2};
+  }
+}
+function infoFromYear(y){
+  const idx60=(y-4)%60;
+  const can=THIEN_CAN[(y+6)%10];
+  const chi=DIA_CHI[(y+8)%12];
+  const napAm=NAP_AM_60[idx60];
+  const element=NAP_AM_TO_ELEMENT[napAm];
+  return {can,chi,napAm,element};
+}
+function phongThuyRelation(u1,u2){
+  const e1=u1.element,e2=u2.element;
+  let nh={type:'?',score:0};
+  if(e1&&e2){
+    if(e1===e2) nh={type:"Đồng hành",score:1};
+    else if(ELEMENT_REL[`${e1}->${e2}`]) nh={type:"Sinh",score:2};
+    else if(ELEMENT_REL[`${e2}->${e1}`]) nh={type:"Được sinh",score:1};
+    else nh={type:"Khắc",score:-2};
+  }
+  let nap={type:u1.napAm+" / "+u2.napAm,score:0};
+  if(u1.element===u2.element) nap.score=1;
+  const bt=batTrachScore(u1.cungPhi,u2.cungPhi);
+  const total=nh.score+nap.score+bt.score;
+  let verdict = "Không hợp";
+  if(total>=3) verdict="Rất hợp";
+  else if(total>=1) verdict="Hơi hợp";
+  else if(total>=0) verdict="Cân nhắc";
+  return { nguHanh:nh, napAm:nap, batTrach:bt, total, verdict };
+}
+
+/* ===== Helpers ===== */
+const qs=(s,el=document)=>el.querySelector(s);
+const whoamiEl=qs('#whoami');
+function escapeHtml(s){return (s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));}
+function uid(prefix='u'){return prefix+'_'+Math.random().toString(36).slice(2,10);}
+function yNow(){return (new Date()).getFullYear();}
+async function currentUser(){ const sess=await Session.get(); if(!sess?.userId) return null; const users=await IDB.getAll('users'); return users.find(u=>u.id===sess.userId)||null; }
+function updateWhoami(u){ whoamiEl.textContent = u?`Đang là: ${u.name} (${u.element||'—'} / ${u.cungPhi||'—'})`:'Chưa đăng nhập'; }
+
+/* ===== Tab switching ===== */
+document.querySelectorAll('.tabbtn').forEach(b=>{
+  b.onclick=async()=>{
+    document.querySelectorAll('.tabpage').forEach(p=>p.classList.remove('active'));
+    qs('#tab-'+b.dataset.tab).classList.add('active');
+    if(b.dataset.tab==='auth'){await renderLoginSelect(); await renderUserList();}
+    if(b.dataset.tab==='browse'){await bootBrowse();}
+    if(b.dataset.tab==='chat'){await bootChat();}
+    if(b.dataset.tab==='phongthuy'){renderPhongThuyTables();}
+  };
+});
+qs('#btnLogout').onclick=async()=>{await Session.clear(); updateWhoami(null); alert('Đã đăng xuất');};
+
+/* ===== Auth ===== */
+const lgSelect=qs('#lgSelect');
+async function renderLoginSelect(){
+  const users=await IDB.getAll('users');
+  lgSelect.innerHTML=users.map(u=>`<option value="${u.id}">${u.name} • ${yNow()-u.year}t • ${u.element||'—'} (${u.cungPhi||'—'})</option>`).join('');
+}
+qs('#btnLoginSelect').onclick=async()=>{
+  const id=lgSelect.value; if(!id) return alert('Chọn người dùng');
+  await Session.set(id); updateWhoami(await currentUser()); alert('Đăng nhập thành công');
+};
+qs('#btnLoginEmail').onclick=async()=>{
+  const email=qs('#lgEmail').value.trim(); if(!email) return alert('Nhập email');
+  const us=await IDB.getAll('users');
+  const u=us.find(x=>(x.email||'').toLowerCase()===email.toLowerCase());
+  if(!u) return alert('Không tìm thấy email');
+  await Session.set(u.id); updateWhoami(u); alert('Đăng nhập thành công');
+};
+qs('#btnLoginNam').onclick=async()=>{
+  const us=await IDB.getAll('users'); const u=us.find(x=>x.name==='Test Nam');
+  if(!u) return alert('Chưa seed'); await Session.set(u.id); updateWhoami(u); alert('Đăng nhập: Test Nam');
+};
+qs('#btnLoginNu').onclick=async()=>{
+  const us=await IDB.getAll('users'); const u=us.find(x=>x.name==='Test Nu');
+  if(!u) return alert('Chưa seed'); await Session.set(u.id); updateWhoami(u); alert('Đăng nhập: Test Nu');
+};
+
+const rg={ name:rgName, gender:rgGender, year:rgYear, job:rgJob, addr:rgAddress, finance:rgFinance, email:rgEmail, phone:rgPhone, bio:rgBio, hobbies:rgHobbies, habits:rgHabits, values:rgValues, avatar:rgAvatar, preview:rgPreview };
+rg.avatar.onchange=async e=>{const f=e.target.files?.[0]; if(!f) return; const r=new FileReader(); r.onload=()=>rg.preview.src=r.result; r.readAsDataURL(f);};
+qs('#btnCreate').onclick=async()=>{
+  const name=rg.name.value.trim(); const year=parseInt(rg.year.value);
+  if(!name||!year) return alert('Nhập tên và năm sinh');
+  let avatar=''; if(rg.avatar.files?.[0]){ const fr=new FileReader(); avatar=await new Promise((res,rej)=>{fr.onload=()=>res(fr.result); fr.onerror=rej; fr.readAsDataURL(rg.avatar.files[0]);}); }
+  const id=uid('u'); const {can,chi,napAm,element}=infoFromYear(year); const cp=cungPhi(year, rg.gender.value);
+  const u={ id, name, gender:rg.gender.value, year, job:rg.job.value.trim(), finance:parseInt(rg.finance.value)||null, address:rg.addr.value.trim(), email:(rg.email.value.trim()||null), phone:(rg.phone.value.trim()||null), bio:rg.bio.value.trim(), hobbies:rg.hobbies.value.trim(), habits:rg.habits.value.trim(), values:rg.values.value.trim(), avatar, can, chi, napAm, element, cungPhi:cp, createdAt: Date.now() };
+  await IDB.put('users',u); await Session.set(id); updateWhoami(u); await renderLoginSelect(); await renderUserList(); alert('Đã tạo tài khoản & đăng nhập: '+name);
+  ['name','year','job','addr','finance','email','phone','bio','hobbies','habits','values'].forEach(k=> rg[k].value=''); rg.avatar.value=''; rg.preview.src='';
+};
+async function renderUserList(){
+  const users=(await IDB.getAll('users')).sort((a,b)=>b.createdAt-a.createdAt);
+  qs('#userList').innerHTML=users.map(u=>{
+    const age=yNow()-u.year;
+    return `<div class="item"><b>${u.name}</b> • ${u.gender}, ${age}t • ${u.job||'—'} • ${u.element||'—'} (${u.can} ${u.chi}) — ${u.cungPhi||'—'}</div>`;
+  }).join('');
+}
+
+/* ===== Browse & Swipe ===== */
+const deckEl=qs('#deck'); const explainEl=qs('#explainBox'); let browse={me:null,list:[],idx:0};
+function userCard(u){
+  const age=yNow()-u.year;
+  const cover=u.avatar||'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nNDgwJyBoZWlnaHQ9JzMyMCcgZmlsbD0nI0FBQScgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJz48L3N2Zz4=';
+  return `<div class="cardUser">
+    <span class="badge">${u.element||'—'} • ${u.can} ${u.chi}</span>
+    <img class="hero" src="${cover}">
+    <div class="meta">
+      <img class="avatar" src="${u.avatar||cover}">
+      <div style="flex:1">
+        <div class="name">${u.name} • ${age}t</div>
+        <div class="muted">${u.job||'—'} • ${u.address||'—'}</div>
+        <div class="muted">Tài chính: ${u.finance?u.finance+'tr/tháng':'—'}</div>
+      </div>
+    </div>
+  </div>`;
+}
+function renderDeck(){
+  deckEl.innerHTML='';
+  if(browse.idx>=browse.list.length){ deckEl.innerHTML=`<div class="end">Hết gợi ý — hãy điều chỉnh bộ lọc</div>`; explainEl.innerHTML=''; return; }
+  const stack=browse.list.slice(browse.idx).reverse(); stack.forEach(u=> deckEl.insertAdjacentHTML('beforeend', userCard(u)));
+  const top=browse.list[browse.idx];
+  if(browse.me&&top){
+    const rel=phongThuyRelation(browse.me,top);
+    const groupMe=(EAST_GROUP.has(browse.me.cungPhi)?"Đông":"Tây");
+    const groupOt=(EAST_GROUP.has(top.cungPhi)?"Đông":"Tây");
+    explainEl.innerHTML=`
+      <div>Người xem: <b>${browse.me.name}</b> — ${browse.me.element} • ${browse.me.can} ${browse.me.chi} • Cung ${browse.me.cungPhi} (${groupMe})</div>
+      <div>Ứng viên: <b>${top.name}</b> — ${top.element} • ${top.can} ${top.chi} • Cung ${top.cungPhi} (${groupOt})</div>
+      <div>Ngũ hành: <b>${rel.nguHanh.type}</b> (điểm ${rel.nguHanh.score>=0?'+':''}${rel.nguHanh.score})</div>
+      <div>Nạp âm: <b>${rel.napAm.type}</b> (điểm ${rel.napAm.score>=0?'+':''}${rel.napAm.score})</div>
+      <div>Bát trạch: <b>${rel.batTrach.type}</b> (điểm ${rel.batTrach.score>=0?'+':''}${rel.batTrach.score})</div>
+      <div><b>Tổng:</b> ${rel.total>=0?'+':''}${rel.total} — <b>${rel.verdict}</b></div>
+      <div class="small">Nhận xét: ${rel.total>=3?'Rất thuận lợi về mệnh và nhóm cung phi. Ưu tiên làm quen.':(rel.total>=1?'Có nhiều điểm tương hợp, có thể tiến triển.':'Cần cân nhắc thêm yếu tố tính cách, sở thích.')}</div>
+    `;
+  } else {
+    explainEl.innerHTML=`<div>Chưa đăng nhập. Vào tab Đăng nhập/Đăng ký để chọn người dùng.</div>`;
+  }
+}
+function currentCandidate(){return browse.list[browse.idx]||null;}
+async function swipe(dir){
+  const cand=currentCandidate(); if(!cand) return;
+  const topCard=deckEl.querySelector('.cardUser:last-child');
+  if(topCard){ topCard.style.transform=`translateX(${dir>0?120:-120}px) rotate(${dir>0?8:-8}deg)`; topCard.style.opacity='0'; setTimeout(()=>topCard.remove(),220); }
+  const me=browse.me; if(!me){ browse.idx++; renderDeck(); return; }
+  await IDB.put('swipes',{id:uid('s'),from:me.id,to:cand.id,dir,at:Date.now()});
+  // chỉ match nếu khác giới tính
+  if(dir>0 && me.gender!=='Khác' && cand.gender!=='Khác' && me.gender!==cand.gender){
+    const all=await IDB.getAll('swipes');
+    const otherLiked=all.find(s=>s.from===cand.id&&s.to===me.id&&s.dir>0);
+    if(otherLiked){
+      const ms=await IDB.getAll('matches');
+      let match=ms.find(m=>(m.a===me.id&&m.b===cand.id)||(m.a===cand.id&&m.b===me.id));
+      if(!match){ match={id:uid('m'),a:me.id,b:cand.id,at:Date.now()}; await IDB.put('matches',match); }
+      localStorage.setItem('chat.openMatchId',match.id);
+      openTab('chat'); await bootChat(); return;
+    }
+  }
+  browse.idx++; renderDeck();
+}
+qs('#btnLike').onclick=()=>swipe(1);
+qs('#btnSkip').onclick=()=>swipe(-1);
+window.addEventListener('keydown',e=>{ if(e.key==='ArrowRight') swipe(1); if(e.key==='ArrowLeft') swipe(-1); });
+
+function openTab(key){ document.querySelectorAll('.tabpage').forEach(p=>p.classList.remove('active')); qs('#tab-'+key).classList.add('active'); }
+async function bootBrowse(){
+  const me=await currentUser(); browse.me=me;
+  const f={
+    q:qs('#fltQ').value.trim().toLowerCase(),
+    gender:qs('#fltGender').value||'',
+    ageMin:parseInt(qs('#fltAgeMin').value)||null,
+    ageMax:parseInt(qs('#fltAgeMax').value)||null,
+    job:qs('#fltJob').value.trim().toLowerCase(),
+    financeMax:parseInt(qs('#fltFinanceMax').value)||null
+  };
+  const users=await IDB.getAll('users'); const yearNow=yNow();
+  let pool=users.filter(u=>!me||u.id!==me.id);
+  if(f.q) pool=pool.filter(u=>(u.name+' '+(u.job||'')+' '+(u.bio||'')).toLowerCase().includes(f.q));
+  if(f.gender) pool=pool.filter(u=>u.gender===f.gender);
+  if(f.ageMin) pool=pool.filter(u=>yearNow-u.year>=f.ageMin);
+  if(f.ageMax) pool=pool.filter(u=>yearNow-u.year<=f.ageMax);
+  if(f.job)    pool=pool.filter(u=>(u.job||'').toLowerCase().includes(f.job));
+  if(f.financeMax!=null) pool=pool.filter(u=>(u.finance||999)<=f.financeMax);
+  if(me) pool.sort((a,b)=> phongThuyRelation(me,b).total - phongThuyRelation(me,a).total);
+  browse.list=pool; browse.idx=0; renderDeck();
+}
+qs('#btnFilter').onclick=bootBrowse;
+qs('#btnReset').onclick=()=>{['fltQ','fltGender','fltAgeMin','fltAgeMax','fltJob','fltFinanceMax'].forEach(id=>{const el=qs('#'+id); if(el) el.value='';}); bootBrowse();};
+
+/* ===== Chat ===== */
+const chatEls={ list:qs('#matchList'), head:qs('#chatHeader'), body:qs('#chatBody'), form:qs('#chatForm'), input:qs('#chatInput') };
+let currentChat={ matchId:null, me:null, other:null };
+async function bootChat(){
+  const me=await currentUser();
+  const ms=(await IDB.getAll('matches')).filter(m=>m.a===me?.id||m.b===me?.id).sort((a,b)=>b.at-a.at);
+  const us=await IDB.getAll('users');
+  const html = ms.map(m=>{
+    const otherId=(m.a===me?.id)?m.b:m.a; const other=us.find(x=>x.id===otherId);
+    if(!other) return '';
+    // chỉ hiển thị khác giới trong bản test
+    if(me&&other&&me.gender!=='Khác'&&other.gender!=='Khác'&&me.gender===other.gender) return '';
+    return `<div class="item" data-mid="${m.id}">💬 ${escapeHtml(other?other.name:otherId)}</div>`;
+  }).join('');
+  chatEls.list.innerHTML=html;
+  chatEls.list.querySelectorAll('.item').forEach(it=> it.onclick=()=>openChat(it.dataset.mid));
+  const auto=localStorage.getItem('chat.openMatchId'); if(auto){ localStorage.removeItem('chat.openMatchId'); await openChat(auto); }
+}
+async function openChat(matchId){
+  const me=await currentUser(); if(!me) return alert('Hãy đăng nhập trước');
+  const m=(await IDB.getAll('matches')).find(x=>x.id===matchId); if(!m) return;
+  const otherId=(m.a===me.id)?m.b:m.a; const us=await IDB.getAll('users'); const other=us.find(x=>x.id===otherId);
+  if(me.gender!=='Khác'&&other?.gender!=='Khác'&&me.gender===other.gender){ return alert('Chat chỉ giữa Nam và Nữ trong bản test.'); }
+  currentChat={ matchId, me, other }; chatEls.head.textContent=`Chat với ${other?other.name:otherId}`; await renderMessages(); chatEls.form.classList.remove('hidden');
+}
+async function renderMessages(){
+  const msgs=(await IDB.getAll('messages')).filter(x=>x.matchId===currentChat.matchId).sort((a,b)=>a.at-b.at);
+  chatEls.body.innerHTML=msgs.map(ms=>`<div class="msg ${ms.from===currentChat.me.id?'me':'other'}">${escapeHtml(ms.body)}</div>`).join('');
+  chatEls.body.scrollTop=chatEls.body.scrollHeight;
+}
+chatEls.form.addEventListener('submit', async e=>{
+  e.preventDefault();
+  const txt=chatEls.input.value.trim(); if(!txt) return;
+  await IDB.put('messages',{id:uid('msg'),matchId:currentChat.matchId,from:currentChat.me.id,body:txt,at:Date.now()});
+  chatEls.input.value=''; await renderMessages();
+});
+
+/* ===== Backup ===== */
+qs('#btnExport').onclick=async()=>{
+  const data={ users:await IDB.getAll('users'), swipes:await IDB.getAll('swipes'), matches:await IDB.getAll('matches'), messages:await IDB.getAll('messages') };
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='dss_offline_backup.json'; a.click();
+};
+qs('#btnImport').onclick=async()=>{
+  const f=qs('#impFile').files?.[0]; if(!f) return alert('Chọn file JSON');
+  const data=JSON.parse(await f.text());
+  if(!data.users||!data.matches||!data.swipes||!data.messages) return alert('Sai định dạng');
+  await IDB.clear('users'); await IDB.bulkPut('users',data.users);
+  await IDB.clear('swipes'); await IDB.bulkPut('swipes',data.swipes);
+  await IDB.clear('matches'); await IDB.bulkPut('matches',data.matches);
+  await IDB.clear('messages'); await IDB.bulkPut('messages',data.messages);
+  await renderLoginSelect(); await renderUserList(); await bootBrowse(); await bootChat(); alert('Đã nhập dữ liệu');
+};
+
+/* ===== Tables: phong thuy ===== */
+function renderPhongThuyTables(){
+  const rows=[]; for(let i=0;i<60;i++){ const can=THIEN_CAN[i%10], chi=DIA_CHI[i%12], na=NAP_AM_60[i]; const el=NAP_AM_TO_ELEMENT[na]; rows.push(`${(i+1).toString().padStart(2,'0')}. ${can} ${chi} → ${na} (${el})`); }
+  qs('#tblNapAm').innerHTML='<pre style="white-space:pre-wrap;line-height:1.4">'+rows.join('\n')+'</pre>';
+  qs('#tblCungPhi').innerHTML=`
+    <ul>
+      <li>Đông tứ mệnh: <b>Khảm, Ly, Chấn, Tốn</b></li>
+      <li>Tây tứ mệnh: <b>Càn, Đoài, Cấn, Khôn</b></li>
+      <li>Cùng nhóm: <i>Sinh Khí/Thiên Y/Phục Vị</i> (tốt/khá). Khác nhóm: <i>Ngũ Quỷ/Lục Sát/Tuyệt Mệnh</i> (xấu).</li>
+    </ul>`;
+}
+
+/* ===== Seed 2 account + 1 match + 10 user demo ===== */
+(async function seedIfEmpty(){
+  await IDB.open();
+  const users=await IDB.getAll('users');
+  if(users.length>0){ updateWhoami(await currentUser()); return; }
+
+  // Test Nam & Test Nu
+  const y1=1994, y2=1996;
+  const a1=infoFromYear(y1), a2=infoFromYear(y2);
+  const u1={ id:uid('u'), name:"Test Nam", gender:"Nam", year:y1, job:"Dev", finance:30, address:"HN", email:"nam@test.local", phone:null, bio:"Thich code & gym", hobbies:"code, gym", habits:"doc sach", values:"gia dinh", avatar:"", can:a1.can, chi:a1.chi, napAm:a1.napAm, element:a1.element, cungPhi:cungPhi(y1,"Nam"), createdAt: Date.now()-5000 };
+  const u2={ id:uid('u'), name:"Test Nu",  gender:"Nữ",  year:y2, job:"Designer", finance:20, address:"HN", email:"nu@test.local",  phone:null, bio:"Yeu thien nhien", hobbies:"ve tranh", habits:"chay bo", values:"hanh phuc", avatar:"", can:a2.can, chi:a2.chi, napAm:a2.napAm, element:a2.element, cungPhi:cungPhi(y2,"Nữ"),  createdAt: Date.now()-4000 };
+
+  // Extra 10 users from DATA_SEED
+  const extra = DATA_SEED.map((r,i)=>{
+    const y = (typeof r.year==='number' ? r.year : 1998);
+    const inf = infoFromYear(y);
+    return { id:uid('u'), name:r.name||('User '+(i+1)), gender:r.gender||"Khác", year:y, job:r.job||"—",
+      finance:r.finance||null, address:r.address||"—", email:null, phone:null, bio:r.bio||"",
+      hobbies:"", habits:"", values:"", avatar:r.avatar||"",
+      can:inf.can, chi:inf.chi, napAm:inf.napAm, element:inf.element, cungPhi:cungPhi(y, r.gender||"Khác"),
+      createdAt: Date.now()-Math.floor(Math.random()*1e6) };
+  });
+
+  await IDB.bulkPut('users',[u1,u2,...extra]);
+
+  // Tạo match sẵn giữa Test Nam ↔ Test Nu
+  const m={ id:uid('m'), a:u1.id, b:u2.id, at: Date.now()-3000 };
+  await IDB.put('matches', m);
+
+  // Tin nhắn mẫu
+  await IDB.bulkPut('messages',[
+    {id:uid('msg'), matchId:m.id, from:u1.id, body:"Chao ban, minh la Nam.", at: Date.now()-2500},
+    {id:uid('msg'), matchId:m.id, from:u2.id, body:"Chao Nam, rat vui duoc lam quen!", at: Date.now()-2000}
+  ]);
+
+  // Đăng nhập sẵn Test Nam
+  await Session.set(u1.id);
+  updateWhoami(u1);
+  await renderLoginSelect();
+  await renderUserList();
+})();
+
+/* ===== Boot ===== */
+(async function boot(){
+  const me=await currentUser(); updateWhoami(me);
+  await renderLoginSelect(); await renderUserList();
+})();
+</script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 // === CONFIG (SQL ONLY) ===
-const API_BASE = "http://127.0.0.1:5000";   // backend FastAPI
+const API_BASE = "http://127.0.0.1:5050";   // backend FastAPI
 
 
 // --- helper fetch ---
