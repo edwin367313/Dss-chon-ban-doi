@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <title>DSS Mate – Đăng ký / Đăng nhập (SQL)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root{
+      --bg:#0f1115; --card:#151922; --muted:#8a8fa3;
+      --text:#e8eaf6; --primary:#6a8dff; --primary-2:#4f73f5; --error:#ff6b6b; --ok:#63d297;
+      --border:#242a36; --input:#0f1320;
+      --radius:14px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial}
+    .wrap{max-width:1100px;margin:48px auto;padding:0 20px}
+    h1{font-size:28px;margin:0 0 18px}
+    p.muted{color:var(--muted);margin:0 0 24px}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    @media (max-width:700px){.row{grid-template-columns:1fr}}
+    label{display:block;font-size:13px;color:var(--muted);margin:10px 0 6px}
+    input,select{width:100%;padding:12px 12px;border-radius:10px;border:1px solid var(--border);background:var(--input);color:var(--text);outline:none}
+    input::placeholder{color:#6b7187}
+    .actions{display:flex;align-items:center;gap:12px;margin-top:14px}
+    .btn{padding:11px 16px;border-radius:12px;border:1px solid transparent;cursor:pointer;background:var(--primary);color:white;font-weight:600}
+    .btn:hover{background:var(--primary-2)}
+    .msg{font-size:14px}
+    .msg.ok{color:var(--ok)} .msg.err{color:var(--error)}
+    .tag{display:inline-flex;gap:8px;align-items:center;padding:8px 10px;border:1px dashed var(--border);border-radius:10px;color:var(--muted)}
+    .stack{display:flex;flex-direction:column;gap:8px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>DSS Mate</h1>
+    <p class="muted">Đăng ký tài khoản mới hoặc đăng nhập để bắt đầu tìm kiếm bạn đời phù hợp với bạn.</p>
+
+
+    <div class="grid">
+      <!-- ĐĂNG KÝ -->
+      <section class="card">
+        <div class="stack" style="gap:4px;margin-bottom:6px">
+          <h2 style="margin:0">Đăng ký</h2>
+          <span class="tag">Hãy điền thông tin thật</span>
+        </div>
+
+        <form id="signupForm" novalidate>
+          <label>Email</label>
+          <input name="email" type="email" placeholder="you@example.com" required />
+
+          <label>Mật khẩu</label>
+          <input name="password" type="password" minlength="6" placeholder="••••••••" required />
+
+          <div class="row">
+            <div>
+              <label>Họ tên</label>
+              <input name="fullName" placeholder="Nguyễn Văn A" required />
+            </div>
+            <div>
+              <label>Giới tính</label>
+              <select name="gender" title="Chọn giới tính" required>
+                <option value="male">Nam</option>
+                <option value="female">Nữ</option>
+                <option value="other">Khác/Không muốn nói</option>
+
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div>
+              <label>Ngày sinh (YYYY-MM-DD)</label>
+              <input name="birthday" placeholder="2004-03-13" required />
+            </div>
+            <div>
+              <label>Avatar (tải từ máy)</label>
+              <input id="avatarFile" name="avatarFile" type="file" accept="image/*" title="Chọn ảnh đại diện" placeholder="Chọn ảnh đại diện" />
+            </div>
+          </div>
+
+          <!-- ĐỊA CHỈ VIỆT NAM -->
+          <div class="row">
+            <div>
+              <label>Tỉnh/Thành phố</label>
+              <select id="province" name="province" title="Chọn Tỉnh/Thành phố" required></select>
+            </div>
+            <div>
+              <label>Quận/Huyện</label>
+              <select id="district" name="district" title="Chọn Quận/Huyện" required></select>
+            </div>
+          </div>
+
+          <!-- Tùy chọn khác -->
+          <label>Sở thích</label>
+          <input name="hobbiesText" placeholder="đọc sách, du lịch..." />
+          <label>Thói quen</label>
+          <input name="habitsText" placeholder="ngủ sớm, tập gym..." />
+          <label>Giá trị sống</label>
+          <input name="valuesText" placeholder="gia đình, trách nhiệm..." />
+
+          <div class="actions">
+            <button type="submit" class="btn">Tạo tài khoản</button>
+            <span id="signupMsg" class="msg"></span>
+          </div>
+        </form>
+      </section>
+
+      <!-- ĐĂNG NHẬP -->
+      <section class="card">
+        <h2 style="margin-top:0">Đăng nhập</h2>
+        <form id="loginForm">
+          <label>Email</label>
+          <input name="email" type="email" title="email" required />
+          <label>Mật khẩu</label>
+          <input name="password" type="password" title="password" required />
+          <div class="actions">
+            <button type="submit" class="btn">Đăng nhập</button>
+            <span id="loginMsg" class="msg"></span>
+          </div>
+        </form>
+      </section>
+    </div>
+  </div>
+
+<script>
+  // ==== CẤU HÌNH BACKEND: dùng URL tuyệt đối, không còn phụ thuộc location ====
+  const API_BASE = "http://127.0.0.1:5000";   // đổi port nếu bạn chạy khác
+
+  // In ra để bạn thấy chắc chắn
+  console.log("API_BASE =", API_BASE);
+
+  async function api(path, method = "GET", body) {
+    const url = API_BASE + path;
+    console.log("[fetch]", method, url);
+    const opt = { method, headers: { "Content-Type": "application/json" } };
+    if (body) opt.body = JSON.stringify(body);
+    const r = await fetch(url, opt);
+    if (!r.ok) throw new Error(`${r.status} ${r.statusText}: ` + await r.text());
+    return r.json();
+  }
+
+  async function uploadAvatar(userId, file, isPrimary = 1, sortOrder = 1) {
+    const fd = new FormData();
+    fd.append("userId", userId);
+    fd.append("isPrimary", String(isPrimary));
+    fd.append("sortOrder", String(sortOrder));
+    fd.append("file", file);
+    const url = API_BASE + "/api/photos/upload";
+    console.log("[fetch] POST", url, "(FormData)");
+    const r = await fetch(url, { method: "POST", body: fd });
+    if (!r.ok) throw new Error(`${r.status} ${r.statusText}: ` + await r.text());
+    return r.json();
+  }
+
+  // ====== SIGNUP ======
+  const signupForm = document.getElementById("signupForm");
+  const signupMsg  = document.getElementById("signupMsg");
+
+  signupForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const f = e.target;
+    const avatarFile = document.getElementById("avatarFile")?.files?.[0] || null;
+
+    const payload = {
+      email: f.email.value.trim(),
+      password: f.password.value,
+      fullName: f.fullName.value.trim(),
+      gender: f.gender.value,
+      birthday: (f.birthday?.value || "").trim(),
+      province: f.province.value,
+      district: f.district.value,
+      hobbiesText: f.hobbiesText?.value?.trim() || null,
+      habitsText:  f.habitsText?.value?.trim() || null,
+      valuesText:  f.valuesText?.value?.trim() || null
+    };
+
+    const setMsg=(ok,t)=>{ signupMsg.textContent=t; signupMsg.className="msg "+(ok?"ok":"err"); };
+
+    try{
+      const res = await api("/api/auth/signup", "POST", payload);
+      const userId = res.userId;
+      if(avatarFile){ await uploadAvatar(userId, avatarFile, 1, 1); }
+      setMsg(true,"Tạo tài khoản thành công!");
+    }catch(err){
+      setMsg(false,"Lỗi đăng ký: " + err.message);
+    }
+  });
+
+  // ====== LOGIN ======
+  const loginForm = document.getElementById("loginForm");
+  const loginMsg  = document.getElementById("loginMsg");
+  loginForm.addEventListener("submit", async (e)=>{
+    e.preventDefault();
+    const f = e.target;
+    const setMsg=(ok,t)=>{ loginMsg.textContent=t; loginMsg.className="msg "+(ok?"ok":"err"); };
+    try{
+      const res = await api("/api/auth/login","POST",{ email:f.email.value.trim(), password:f.password.value });
+      setMsg(true,"Đăng nhập OK: " + res.email);
+    }catch(err){
+      setMsg(false,"Lỗi đăng nhập: " + err.message);
+    }
+  });
+</script>
+
+
+  <script>
+    // Dữ liệu tỉnh/huyện Việt Nam (cắt gọn, chỉ lấy một số tỉnh lớn)
+const VN_DATA = {
+      "Hà Nội": ["Ba Đình","Hoàn Kiếm","Đống Đa","Hai Bà Trưng","Cầu Giấy","Thanh Xuân","Hoàng Mai","Long Biên","Hà Đông","Bắc Từ Liêm","Nam Từ Liêm","Sóc Sơn","Đông Anh","Gia Lâm","Thanh Trì","Thường Tín","Phú Xuyên","Mê Linh","Chương Mỹ","Đan Phượng","Hoài Đức","Mỹ Đức","Phúc Thọ","Quốc Oai","Thạch Thất","Thanh Oai","Ứng Hòa","Ba Vì","Sơn Tây"],
+      "TP. Hồ Chí Minh": ["Quận 1","Quận 3","Quận 4","Quận 5","Quận 6","Quận 7","Quận 8","Quận 10","Quận 11","Quận 12","Gò Vấp","Bình Thạnh","Tân Bình","Tân Phú","Phú Nhuận","Bình Tân","Thủ Đức","Bình Chánh","Hóc Môn","Củ Chi","Nhà Bè","Cần Giờ"],
+      "Đà Nẵng": ["Hải Châu","Thanh Khê","Sơn Trà","Ngũ Hành Sơn","Liên Chiểu","Cẩm Lệ","Hòa Vang"],
+      "Hải Phòng": ["Hồng Bàng","Lê Chân","Ngô Quyền","Hải An","Kiến An","Đồ Sơn","Dương Kinh","An Dương","An Lão","Kiến Thuỵ","Thuỷ Nguyên","Tiên Lãng","Vĩnh Bảo","Cát Hải","Bạch Long Vĩ"],
+      "Cần Thơ": ["Ninh Kiều","Bình Thuỷ","Cái Răng","Ô Môn","Thốt Nốt","Phong Điền","Cờ Đỏ","Vĩnh Thạnh","Thới Lai"],
+      "Bình Dương": ["Thủ Dầu Một","Thuận An","Dĩ An","Tân Uyên","Bến Cát","Bàu Bàng","Bắc Tân Uyên","Phú Giáo","Dầu Tiếng"],
+      "Đồng Nai": ["Biên Hoà","Long Khánh","Vĩnh Cửu","Trảng Bom","Thống Nhất","Cẩm Mỹ","Long Thành","Nhơn Trạch","Xuân Lộc","Tân Phú","Định Quán"],
+      "Quảng Ninh": ["Hạ Long","Cẩm Phả","Uông Bí","Móng Cái","Quảng Yên","Đông Triều","Cô Tô","Tiên Yên","Hải Hà","Vân Đồn","Bình Liêu","Ba Chẽ","Đầm Hà"],
+      "Thừa Thiên Huế": ["Huế","Hương Trà","Hương Thuỷ","Quảng Điền","Phong Điền","Phú Vang","Phú Lộc","A Lưới","Nam Đông"]
+    };
+    // Render tỉnh/huyện
+    const provinceEl = document.getElementById("province");
+    const districtEl = document.getElementById("district");
+    function loadProvinces(){
+      provinceEl.innerHTML = `<option value="" disabled selected>Chọn Tỉnh/Thành phố</option>` +
+        Object.keys(VN_DATA).map(p=>`<option value="${p}">${p}</option>`).join("");
+      districtEl.innerHTML = `<option value="" disabled selected>Chọn Quận/Huyện</option>`;
+    }
+    function loadDistricts(p){
+      const ds = VN_DATA[p] || [];
+      districtEl.innerHTML = `<option value="" disabled selected>Chọn Quận/Huyện</option>` +
+        ds.map(d=>`<option value="${d}">${d}</option>`).join("");
+    }
+    provinceEl.addEventListener("change", e=>loadDistricts(e.target.value));
+    loadProvinces();
+
+    // ====== SIGNUP ======
+    // Removed duplicate declaration of signupForm and signupMsg
+
+    // ====== LOGIN ======
+    // Removed duplicate declaration of loginForm and loginMsg
+  </script>
+</body>
+</html>

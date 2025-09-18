@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DSS Mate – Trang chủ</title>
+  <link rel="stylesheet" href="assets/style.css" /> 
+  <style>
+    /* ===== menu + search/filter ===== */
+    .nav{position:sticky;top:0;z-index:50;background:#0f1320;border-bottom:1px solid var(--border)}
+    .nav .wrap{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:10px 16px}
+    .nav .brand{font-weight:800}
+    .nav .menu{display:flex;gap:12px}
+    .nav .spacer{flex:1}
+    .nav .auth a{padding:8px 14px;border-radius:999px;border:1px solid var(--border)}
+    .nav .auth .primary{background:var(--accent);border:none;color:#0e1117}
+
+    .searchbar{background:#0f1320;border-bottom:1px solid var(--border)}
+    .searchbar .wrap{max-width:1200px;margin:0 auto;padding:12px 16px;display:grid;grid-template-columns:2fr 1fr;gap:12px}
+    .searchbar .q{display:flex;gap:10px}
+    .searchbar .q input{flex:1}
+    .filters{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+    .filters .col2{grid-column:span 2}
+    .filters .col3{grid-column:span 3}
+    .filters .actions{display:flex;gap:8px;align-items:center;justify-content:flex-end}
+
+    /* ===== swipe deck ===== */
+    .deck{max-width:900px;margin:18px auto;padding:0 16px}
+    .deck .row.actions{justify-content:center;gap:16px;margin-top:12px}
+    .card.candidate{max-width:680px;margin:0 auto}
+    .candidate .hero{position:relative}
+    .candidate .hero img{width:100%;height:420px;object-fit:cover}
+    .candidate .meta{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+    .candidate .meta .title{font-weight:700;font-size:18px}
+    .candidate .badges{display:flex;gap:8px;flex-wrap:wrap}
+    .chip{border:1px solid var(--border);padding:4px 8px;border-radius:999px;color:var(--muted);font-size:12px}
+  </style>
+</head>
+<body>
+
+  <!-- MENU -->
+  <header class="nav">
+    <div class="wrap">
+      <a class="brand" href="index.html">DSS Mate</a>
+      <nav class="menu">
+        <a href="#about">About us</a>
+        <a href="#features">Tinh nang</a>
+        <a href="chat.html">Chat</a>
+      </nav>
+      <div class="spacer"></div>
+      <div class="auth">
+        <a href="auth.html">Dang nhap</a>
+        <a class="primary" href="auth.html">Dang ky</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- SEARCH + FILTER -->
+  <section class="searchbar">
+    <div class="wrap">
+      <!-- dòng 1: ô tìm kiếm nhanh -->
+      <div class="q">
+        <input id="q" placeholder="Tim theo ten, cong viec, so thich..." />
+        <button id="btnSearch" class="primary">Tim</button>
+      </div>
+      <!-- dòng 1 cột phải để trống hoặc chỗ hiển thị tổng -->
+      <div class="row end" id="resultCount">0 ket qua</div>
+
+      <!-- dòng 2: filter chi tiết -->
+      <div class="filters col3">
+        <label for="fGender" class="visually-hidden">Gioi tinh</label>
+        <select id="fGender" title="Gioi tinh">
+          <option value="">Gioi tinh (tat ca)</option>
+          <option value="male">Nam</option>
+          <option value="female">Nu</option>
+          <option value="other">Khac</option>
+        </select>
+        <input id="fAgeMin" type="number" placeholder="Tuoi tu" />
+        <input id="fAgeMax" type="number" placeholder="Tuoi den" />
+        <input id="fDistance" type="number" placeholder="Khoang cach (km)" />
+        </select>
+        <input id="fJob" placeholder="Cong viec" />
+        <input id="fFinanceMin" type="number" placeholder="Tai chinh min (trieu/thang)" />
+        <input id="fFinanceMax" type="number" placeholder="Tai chinh max (trieu/thang)" />
+        <div class="actions col3">
+          <button id="btnReset" class="ghost">Reset</button>
+          <button id="btnApply" class="primary">Filter</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SWIPE DECK -->
+  <section class="deck">
+    <div id="card" class="card candidate empty">
+      <p>Nhap tu khoa de hien ket qua…</p>
+    </div>
+    <div class="row actions">
+      <button id="btnSkip" class="ghost">👎 Bo qua</button>
+      <button id="btnLike" class="primary">👍 Thich</button>
+    </div>
+  </section>
+
+  <!-- (tuy chon) ABOUT/FEATURES giong truoc -->
+  <section id="about" class="section">
+    <h2>About us</h2>
+    <div class="cards">
+      <div class="card"><b>Minh bach</b><p class="muted">Giai thich diem theo ngu hanh</p></div>
+      <div class="card"><b>Bao mat</b><p class="muted">Toi thieu thông tin nhạy cảm, luu tru an toan.</p></div>
+      <div class="card"><b>Nhanh gon</b><p class="muted">Toi uu nguoi dung và he thong</p></div>
+    </div>
+  </section>
+
+  <script src="assets/app.js"></script>
+  <script>
+    // ====== STATE ======
+    const me = (storage && storage.getUser && storage.getUser()) || null; // co the chua dang nhap
+    let candidates = []; let idx = 0; let current = null;
+
+    // ====== EVENTS ======
+    document.getElementById('btnSearch').onclick = () => loadCandidates(true);
+    document.getElementById('btnApply').onclick  = () => loadCandidates(true);
+    document.getElementById('btnReset').onclick  = () => { resetFilters(); loadCandidates(true); };
+
+    document.getElementById('btnLike').onclick   = () => swipe(1);
+    document.getElementById('btnSkip').onclick   = () => swipe(-1);
+
+    // enter = search
+    document.getElementById('q').addEventListener('keydown', e => { if(e.key==='Enter'){ e.preventDefault(); loadCandidates(true);} });
+
+    // ====== FILTER HELPERS ======
+    function readFilters(){
+      return {
+        q: valueOf('q'),
+        gender: valueOf('fGender'),
+        ageMin: intOf('fAgeMin'),
+        ageMax: intOf('fAgeMax'),
+        distanceKm: intOf('fDistance'),
+        element: valueOf('fElement'),
+        cungPhi: valueOf('fCungPhi'),
+        job: valueOf('fJob'),
+        financeMin: intOf('fFinanceMin'),
+        financeMax: intOf('fFinanceMax')
+      };
+    }
+    function valueOf(id){ const v=document.getElementById(id).value.trim(); return v || null; }
+    function intOf(id){ const v=document.getElementById(id).value.trim(); return v? Number(v) : null; }
+    function resetFilters(){ ['q','fGender','fAgeMin','fAgeMax','fDistance','fElement','fCungPhi','fJob','fFinanceMin','fFinanceMax'].forEach(id=>document.getElementById(id).value=''); }
+
+    // ====== LOAD CANDIDATES ======
+    async function loadCandidates(reset=false){
+      if(reset){ candidates=[]; idx=0; current=null; }
+      const filters = readFilters();
+
+      try{
+        // uu tien goi endpoint tim kiem (de de dang loc)
+        const list = await api.searchCandidates(filters);  // see app.js additions
+        candidates = list || [];
+        document.getElementById('resultCount').textContent = `${candidates.length} ket qua`;
+        idx = 0; renderCard();
+      }catch(e){
+        notify(e.message || 'Khong tai duoc danh sach');
+      }
+    }
+
+    // ====== RENDER CARD ======
+    function renderCard(){
+      const el = document.getElementById('card');
+      if(idx >= candidates.length){
+        el.classList.add('empty');
+        el.innerHTML = `<p>Khong con ket qua.</p>`;
+        current = null;
+        return;
+      }
+      current = candidates[idx];
+      el.classList.remove('empty');
+      el.innerHTML = candidateView(current);
+    }
+
+    function candidateView(c){
+      const avatar = c.avatarUrl || `/uploads/${c.id || c.userId}.jpg`;
+      return `
+        <div class="hero">
+          <img src="${avatar}" onerror="this.src='/uploads/default_1.jpg'" alt="">
+        </div>
+        <div class="meta">
+          <div>
+            <div class="title">${escapeHtml(c.fullName || c.name || 'Ung vien')}</div>
+            <div class="small muted">${ageLabel(c)} · ${escapeHtml(c.occupation || '—')} · ${financeLabel(c)}</div>
+          </div>
+          <div class="badges">
+            ${c.element ? `<span class="chip">${escapeHtml(c.element)}</span>`:''}
+            ${c.cungPhi ? `<span class="chip">${escapeHtml(c.cungPhi)}</span>`:''}
+            ${c.distanceKm ? `<span class="chip">${c.distanceKm} km</span>`:''}
+          </div>
+        </div>
+      `;
+    }
+
+    function ageLabel(c){
+      if(c.age) return `${c.age} tuoi`;
+      if(c.birthday){ const a = calcAge(c.birthday); return `${a} tuoi`; }
+      return '— tuoi';
+    }
+    function financeLabel(c){
+      if(c.finance) return `${c.finance} trieu/thang`;
+      if(c.financeMin||c.financeMax){
+        const lo = c.financeMin ?? '?', hi = c.financeMax ?? '?';
+        return `${lo}–${hi} trieu/thang`;
+      }
+      return '— tai chinh';
+    }
+    function calcAge(dob){ try{ const d=new Date(dob); const t=new Date(); let a=t.getFullYear()-d.getFullYear(); const m=t.getMonth()-d.getMonth(); if(m<0||(m===0 && t.getDate()<d.getDate())) a--; return a; }catch{ return null; } }
+    function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+    // ====== SWIPE ======
+    async function swipe(direction){
+      if(!current){ return; }
+      try{
+        if(me){ await api.swipe(me.userId, current.id || current.userId, direction); }
+        idx += 1; renderCard();
+      }catch(e){ notify(e.message || 'Swipe that bai'); }
+    }
+
+    // ====== FIRST LOAD (optional: auto show some) ======
+    loadCandidates(true);
+  </script>
+</body>
+</html>
